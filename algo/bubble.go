@@ -21,24 +21,22 @@ func bubble_sort(numbers []int) {
 
 
 func sweep(numbers []int, previousPasses int) bool {
-  var N int = len(numbers)
-  var firstIndex int = 0
-  var secondIndex int = 1
-  var didSwap bool = false
+    N := len(numbers)
+    firstIndex := 0
+    secondIndex := 1
+    didSwap := false
 
-  for secondIndex < (N - previousPasses) {
-    var firstNumber int = numbers[firstIndex]
-    var secondNumber int = numbers[secondIndex]
+    for secondIndex < (N-previousPasses) {
+      firstNumber := numbers[firstIndex]
+      secondNumber := numbers[secondIndex]
 
-    if firstNumber > secondNumber {
-      // swap the numbers
-      numbers[firstIndex] = secondNumber
-      numbers[secondIndex] = firstNumber
-      didSwap = true
+      if firstNumber > secondNumber {
+        numbers[firstIndex] = secondNumber
+        numbers[secondIndex] = firstNumber
+        didSwap = true
+      }
+      firstIndex++
+      secondIndex++
     }
-
-    firstIndex++
-    secondIndex++
-  }
   return didSwap
 }

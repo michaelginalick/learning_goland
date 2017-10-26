@@ -10,6 +10,7 @@ func main() {
     in := bufio.NewScanner(os.Stdin)
     in.Scan()
     size, err := strconv.Atoi(in.Text())
+
     if err != nil {
         fmt.Fprintf(os.Stderr, "Bad array size\n")
         os.Exit(1)
