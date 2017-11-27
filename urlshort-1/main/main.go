@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"io/ioutil"
+    "path/filepath"
 	"./urlshort"
 )
 
@@ -18,16 +20,25 @@ func main() {
 
 	// Build the YAMLHandler using the mapHandler as the
 	// fallback
-	yaml := `
-- path: /urlshort
-  url: https://github.com/gophercises/urlshort
-- path: /urlshort-final
-  url: https://github.com/gophercises/urlshort/tree/solution
-`
-	yamlHandler, err := urlshort.YAMLHandler([]byte(yaml), mapHandler)
+// 	yaml := `
+// - path: /urlshort
+//   url: https://github.com/gophercises/urlshort
+// - path: /urlshort-final
+//   url: https://github.com/gophercises/urlshort/tree/solution
+// `
+
+	filename, _ := filepath.Abs("urls.yaml")
+    yamlFile, err := ioutil.ReadFile(filename)
+
+    if err != nil {
+		panic(err)
+	}
+
+	yamlHandler, err := urlshort.YAMLHandler([]byte(yamlFile), mapHandler)
 	if err != nil {
 		panic(err)
 	}
+
 	fmt.Println("Starting the server on :8080")
 	http.ListenAndServe(":8080", yamlHandler)
 }
