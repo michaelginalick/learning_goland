@@ -13,7 +13,7 @@ import (
 // http.Handler will be called instead.
 func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request){
-		path := r.URL.Path
+	path := r.URL.Path
     if dest, ok := pathsToUrls[path]; ok {
 		  http.Redirect(w, r, dest, http.StatusFound)
 			return
@@ -51,7 +51,7 @@ func YAMLHandler(yamlBytes []byte, fallback http.Handler) (http.HandlerFunc, err
 	return MapHandler(pathsToUrls, fallback), nil
 }
 
-func buildMap(pathUrls, []pathUrl) map[string]string {
+func buildMap(pathUrls []pathUrl) map[string]string {
 	pathsToUrls := make(map[string]string)
 
 	for _, pu := range pathUrls {
@@ -61,7 +61,7 @@ func buildMap(pathUrls, []pathUrl) map[string]string {
 	return pathsToUrls
 }
 
-func parseYaml(data []byte) ([]pathURL, error) {
+func parseYaml(data []byte) ([]pathUrl, error) {
 
 	var pathUrls []pathUrl
 
@@ -71,7 +71,7 @@ func parseYaml(data []byte) ([]pathURL, error) {
 		return nil, err
 	}
 
-	return pathURLs, nil
+	return pathUrls, nil
 }
 
 
