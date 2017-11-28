@@ -2,7 +2,8 @@ package urlshort
 
 import (
 	"net/http"
-	"gopkg.in/yaml.v2"
+	//"gopkg.in/yaml.v2"
+  "encoding/json"
 )
 
 // MapHandler will return an http.HandlerFunc (which also
@@ -21,7 +22,6 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 		fallback.ServeHTTP(w, r)
 	}
 }
-
 // YAMLHandler will parse the provided YAML and then return
 // an http.HandlerFunc (which also implements http.Handler)
 // that will attempt to map any paths to their corresponding
@@ -38,34 +38,47 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 //
 // See MapHandler to create a similar http.HandlerFunc via
 // a mapping of paths to urls.
-func YAMLHandler(yamlBytes []byte, fallback http.Handler) (http.HandlerFunc, error) {
-	
-	pathUrls, err := parseYaml(yamlBytes)
+//func YAMLHandler(yamlBytes []byte, fallback http.Handler) (http.HandlerFunc, error) {
+
+	//pathUrls, err := parseYaml(yamlBytes)
+
+	//if err != nil {
+		//return nil, err
+	//}
+
+	//pathsToUrls := buildMap(pathUrls)
+
+	//return MapHandler(pathsToUrls, fallback), nil
+//}
+
+func JSONHandler(jsonBytes []byte, fallback http.Handler) (http.HandlerFunc, error) {
+
+  pathUrls, err := parseJson(jsonBytes)
 
 	if err != nil {
-		return nil, err
+	  return nil, err
 	}
 
-	pathsToUrls := buildMap(pathUrls)
+  pathsToUrls := buildMap(pathUrls)
 
 	return MapHandler(pathsToUrls, fallback), nil
 }
 
-func buildMap(pathUrls []pathUrl) map[string]string {
+func buildMap(jsonPathUrl []jsonPathUrl) map[string]string {
 	pathsToUrls := make(map[string]string)
 
-	for _, pu := range pathUrls {
+	for _, pu := range jsonPathUrl {
 		pathsToUrls[pu.Path] = pu.URL
-	} 
+	}
 
 	return pathsToUrls
 }
 
-func parseYaml(data []byte) ([]pathUrl, error) {
+func parseJson(data []byte) ([]jsonPathUrl, error) {
 
-	var pathUrls []pathUrl
+	var pathUrls []jsonPathUrl
 
-	err := yaml.Unmarshal(data, &pathUrls)
+	err := json.Unmarshal(data, &pathUrls)
 
 	if err != nil {
 		return nil, err
@@ -78,4 +91,9 @@ func parseYaml(data []byte) ([]pathUrl, error) {
 type pathUrl struct {
 	Path string `yaml:"path"`
 	URL string  `yaml:"url"`
+}
+
+type jsonPathUrl struct {
+  Path string `json: "path"`
+	URL string  `json: "url"`
 }
