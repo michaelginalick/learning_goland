@@ -16,6 +16,20 @@ type student struct{
   next *student
 }
 
+func addEnd(studentList *student, newStudent *student) *student {
+
+  if studentList == nil {
+    return studentList
+  }
+  
+  for s := studentList; s != nil; s = s.next {
+    if s.next == nil {
+      s.next = newStudent
+      break
+    }
+  }
+  return studentList
+}
 
 func reverse(curr *student) *student{
 
@@ -69,6 +83,19 @@ func main() {
   students = reverse(students)
 
   fmt.Println("\nReverse----------")
+  for s := students; s != nil; s = s.next {
+    fmt.Println(s.name, s.age, s.ssn)
+  }
+
+
+  newStudent := &student{
+    name: "Mike",
+    ssn: "332-334-445",
+    age: 33,
+    next: nil,
+  }
+  fmt.Println("\nAdd New Element")
+  students = addEnd(students, newStudent)
   for s := students; s != nil; s = s.next {
     fmt.Println(s.name, s.age, s.ssn)
   }
