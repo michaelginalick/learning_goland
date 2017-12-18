@@ -16,11 +16,23 @@ type student struct{
   next *student
 }
 
+
+func reverse(curr *student) *student{
+
+  if curr.next == nil{
+    return curr
+  } else {
+    newHead := reverse(curr.next)
+    curr.next.next = curr
+    curr.next = nil
+    return newHead
+  }
+}
+
 func main() {
   
-  students := new(student)
-
-  students.next = nil
+  var students *student
+  students = nil
 
   if len(os.Args) < 2 {
     fmt.Println("there is no file")
@@ -42,15 +54,22 @@ func main() {
     ts := &student {
       name: td[0],
       ssn:  td[2],
-      next: students.next,
+      next: students,
     }
     ts.age, _ = strconv.Atoi(td[1])
-    students.next = ts
+    students = ts
   }
 
-  
 
-  for s := students.next; s != nil; s = s.next {
+  fmt.Println("Original----------")
+  for s := students; s != nil; s = s.next {
+    fmt.Println(s.name, s.age, s.ssn)
+  }
+
+  students = reverse(students)
+
+  fmt.Println("\nReverse----------")
+  for s := students; s != nil; s = s.next {
     fmt.Println(s.name, s.age, s.ssn)
   }
 
