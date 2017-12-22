@@ -56,6 +56,18 @@ func reverse(curr *student) *student{
   }
 }
 
+
+func findElementByName(curr string, studentList *student)  string {
+
+  for s := studentList; s != nil; s = s.next {
+    if s.name == curr {
+      return s.name
+      break
+    }
+  }
+  return ""
+}
+
 func main() {
 
   var students *student
@@ -118,5 +130,9 @@ func main() {
 	for s := students; s != nil; s = s.next {
 	  fmt.Println(s.name, s.age, s.ssn)
 	}
+
+  fmt.Println("\nFind element in the list------")
+  foundStudent := findElementByName("Mike", students)
+  fmt.Println(foundStudent)
 
 }
