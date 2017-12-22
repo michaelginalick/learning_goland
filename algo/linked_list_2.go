@@ -16,12 +16,25 @@ type student struct{
   next *student
 }
 
-func addEnd(studentList *student, newStudent *student) *student {
+
+func addBeginning(studentList, newStudent *student) *student {
+    if studentList == nil {
+				return studentList
+		}
+
+	  newStudent.next = studentList
+    //add this to break out of loop
+    studentList.next.next.next = nil
+    return newStudent
+}
+
+
+func addEnd(studentList, newStudent *student) *student {
 
   if studentList == nil {
     return studentList
   }
-  
+
   for s := studentList; s != nil; s = s.next {
     if s.next == nil {
       s.next = newStudent
@@ -43,8 +56,20 @@ func reverse(curr *student) *student{
   }
 }
 
+
+func findElementByName(curr string, studentList *student)  string {
+
+  for s := studentList; s != nil; s = s.next {
+    if s.name == curr {
+      return s.name
+      break
+    }
+  }
+  return ""
+}
+
 func main() {
-  
+
   var students *student
   students = nil
 
@@ -94,10 +119,20 @@ func main() {
     age: 33,
     next: nil,
   }
-  fmt.Println("\nAdd New Element")
+  fmt.Println("\nAdd New Element at the end-------")
   students = addEnd(students, newStudent)
   for s := students; s != nil; s = s.next {
     fmt.Println(s.name, s.age, s.ssn)
   }
+
+	fmt.Println("\nAdd New Element at the beginning------")
+  students = addBeginning(students, newStudent)
+	for s := students; s != nil; s = s.next {
+	  fmt.Println(s.name, s.age, s.ssn)
+	}
+
+  fmt.Println("\nFind element in the list------")
+  foundStudent := findElementByName("Mike", students)
+  fmt.Println(foundStudent)
 
 }
