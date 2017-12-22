@@ -28,6 +28,22 @@ func addBeginning(studentList, newStudent *student) *student {
     return newStudent
 }
 
+func deleteList(studentList *student) *student {
+
+		if studentList == nil {
+				return studentList
+		}
+
+
+		for s := studentList; s != nil; s = s.next {
+			delete(studentList, s)
+		}
+
+		return studentList
+}
+
+
+
 
 func addEnd(studentList, newStudent *student) *student {
 
@@ -36,11 +52,11 @@ func addEnd(studentList, newStudent *student) *student {
   }
 
   for s := studentList; s != nil; s = s.next {
-    if s.next == nil {
-      s.next = newStudent
-      break
-    }
-  }
+		if s.next == nil {
+			s.next = newStudent
+			break
+		}
+	}
   return studentList
 }
 
@@ -134,5 +150,9 @@ func main() {
   fmt.Println("\nFind element in the list------")
   foundStudent := findElementByName("Mike", students)
   fmt.Println(foundStudent)
+
+	fmt.Println("\n Delete the linked list")
+	shouldBeNil := deleteList(students)
+	fmt.Println(shouldBeNil)
 
 }
