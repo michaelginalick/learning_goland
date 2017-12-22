@@ -28,7 +28,6 @@ func addBeginning(studentList, newStudent *student) *student {
     return newStudent
 }
 
-
 func addEnd(studentList, newStudent *student) *student {
 
   if studentList == nil {
@@ -36,11 +35,11 @@ func addEnd(studentList, newStudent *student) *student {
   }
 
   for s := studentList; s != nil; s = s.next {
-    if s.next == nil {
-      s.next = newStudent
-      break
-    }
-  }
+		if s.next == nil {
+			s.next = newStudent
+			break
+		}
+	}
   return studentList
 }
 
