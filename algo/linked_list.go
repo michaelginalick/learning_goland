@@ -5,34 +5,31 @@ import(
   "fmt"
 )
 
-
-
-
-type Student struct{
+type student struct{
   age int
   weight int
   name string
-  Next *Student
-}
-
-
-type Teacher struct {
-  age int
-  weight int
-  name string
-  Next *Student
+	next *student
 }
 
 func main() {
 
-  kyle := Student{7, 70, "kyle", nil}
-  john := Student{10, 100, "john", &kyle}
+	mike := &student{33, 200, "mike", nil}
+  studentList := addNode(mike)
+	greg := &student{34, 443, "greg", nil}
+  studentList = addNodeBeginning(greg, studentList)
 
-  deborah := Teacher{24, 185, "deborah", &john}
+	for s := studentList; s != nil; s = s.next {
+	  fmt.Println(s.age, s.weight, s.name)
+	}
+}
 
-   fmt.Println("The teach is", deborah.name)
-   fmt.Println("the student behind deborah is:", deborah.Next.name)
-   fmt.Println("the student behind john is:", deborah.Next.Next.name)
-   fmt.Println("the student behind kyle is:", kyle.Next)
-  
+
+func addNode(newStudent *student) *student {
+	return newStudent
+}
+
+func addNodeBeginning(newStudent, studentList *student) *student {
+  newStudent.next = studentList
+	return newStudent
 }
