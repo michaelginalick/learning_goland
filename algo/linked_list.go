@@ -25,13 +25,20 @@ func main() {
 	studentList = addNodeBeginning(marshall, studentList)
   studentList = addNodeEnd(allison, studentList)
 
-  printList(studentList)
+ //  printList(studentList)
 
-	fmt.Println("\nFind student-----------------")
-	findStudent := findNodeByName("mike", studentList)
-	fmt.Println(findStudent.name)
-	fmt.Println("\nDelete student")
-	studentList = deleteNodeByName("allison", studentList)
+	// fmt.Println("\nFind student-----------------")
+	// findStudent := findNodeByName("mike", studentList)
+	// fmt.Println(findStudent.name)
+	// fmt.Println("\nDelete student")
+	// studentList = deleteNodeByName("allison", studentList)
+	printList(studentList)
+	fmt.Println("\nreverse list recurrsive")
+	studentList = reverseRecurrsive(studentList)
+	printList(studentList)
+
+	fmt.Println("\nreverse list iterative")
+	studentList = reverseIterative(studentList)
 	printList(studentList)
 }
 
@@ -62,6 +69,44 @@ func deleteNodeByName(name string, studentList *student) *student{
 		s = s.next
 	}
 	return studentList
+}
+
+func reverseRecurrsive(studentList *student) *student {
+	if studentList == nil {
+		return studentList
+	}
+
+	s := studentList
+
+	if s.next == nil {
+		return s
+	} else {
+		newHead := reverseRecurrsive(s.next)
+		s.next.next = s
+		s.next = nil
+		return newHead
+	}
+
+}
+
+
+func reverseIterative(studentList *student) *student {
+	if studentList == nil {
+		return studentList
+	}
+
+	curr := studentList
+	prev := &student{}
+	next := &student{}
+
+	for curr != nil {
+		next = curr.next
+		curr.next = prev
+		prev = curr
+		curr = next
+	}
+	curr = prev
+	return curr
 }
 
 
