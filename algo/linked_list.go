@@ -25,25 +25,25 @@ func main() {
 	studentList = addNodeBeginning(marshall, studentList)
   studentList = addNodeEnd(allison, studentList)
 
-  // printList(studentList)
+  printList(studentList)
 
-	// fmt.Println("\nFind student-----------------")
-	// findStudent := findNodeByName("mike", studentList)
-	// fmt.Println(findStudent.name)
-	// fmt.Println("\nDelete student")
-	// studentList = deleteNodeByName("allison", studentList)
-	// printList(studentList)
-	// fmt.Println("\nreverse list recurrsive")
-	// studentList = reverseRecurrsive(studentList)
-	// printList(studentList)
+	fmt.Println("\nFind student-----------------")
+	findStudent := findNodeByName("mike", studentList)
+	fmt.Println(findStudent.name)
+	fmt.Println("\nDelete student")
+	studentList = deleteNodeByName("allison", studentList)
+	printList(studentList)
+	fmt.Println("\nreverse list recurrsive")
+	studentList = reverseRecurrsive(studentList)
+	printList(studentList)
 
-	// fmt.Println("\nreverse list iterative")
-	// studentList = reverseIterative(studentList)
-	// printList(studentList)
+	fmt.Println("\nreverse list iterative")
+	studentList = reverseIterative(studentList)
+	printList(studentList)
 
 	billy := &student{34, 443, "billy", nil}
-	// studentList = insertAfter("allison", billy, studentList)
-	// printList(studentList)
+	studentList = insertAfter("allison", billy, studentList)
+	printList(studentList)
 	studentList = insertBefore("mike", billy, studentList)
 	printList(studentList)
 }
@@ -73,18 +73,9 @@ func insertBefore(name string, newStudent, studentList *student) *student {
 		}
 		s = s.next
 	}
-
 	return studentList
-
 }
 
-func isNull(s *student) bool{
-	if s.next != nil && s.next.next != nil {
-		return true
-	} else {
-		return false
-	}
-}
 
 func insertAfter(name string, newStudent, studentList *student) *student {
 	if studentList == nil {
