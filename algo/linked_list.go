@@ -54,11 +54,24 @@ func printList(studentList *student) *student{
 	return studentList
 }
 
-// marshall
-// james
-// greg
-// mike
-// allison
+
+func insertBefore(name string, newStudent, studentList *student) *student {
+
+	if studentList == nil {
+		return studentList
+	}
+
+	s := studentList
+
+	for s != nil {
+		nextNode = s.next.next
+		if nextNode == name {
+			s.next = newStudent
+			newStudent.next = 
+		}
+	}
+
+}
 
 func insertAfter(name string, newStudent, studentList *student) *student {
 	if studentList == nil {
@@ -68,8 +81,8 @@ func insertAfter(name string, newStudent, studentList *student) *student {
 	s := studentList
 
 	for s != nil {
+		nextNode := s.next
 		if s.name == name {
-			 nextNode := s.next
 			 s.next = newStudent
 			 newStudent.next = nextNode
 			 break
