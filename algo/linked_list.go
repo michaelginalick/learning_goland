@@ -42,7 +42,9 @@ func main() {
 	// printList(studentList)
 
 	billy := &student{34, 443, "billy", nil}
-	studentList = insertAfter("greg", billy, studentList)
+	// studentList = insertAfter("allison", billy, studentList)
+	// printList(studentList)
+	studentList = insertBefore("mike", billy, studentList)
 	printList(studentList)
 }
 
@@ -64,13 +66,24 @@ func insertBefore(name string, newStudent, studentList *student) *student {
 	s := studentList
 
 	for s != nil {
-		nextNode = s.next.next
-		if nextNode == name {
+		if s.next.name == name {
+			newStudent.next = s.next
 			s.next = newStudent
-			newStudent.next = 
+			break
 		}
+		s = s.next
 	}
 
+	return studentList
+
+}
+
+func isNull(s *student) bool{
+	if s.next != nil && s.next.next != nil {
+		return true
+	} else {
+		return false
+	}
 }
 
 func insertAfter(name string, newStudent, studentList *student) *student {
