@@ -11,13 +11,15 @@ type tree struct {
 
 func main() {
 
-	s := []int{54, 23, 12, 2, 0, 3, 1, 9, 10, 99}
-	x := insert(s)
-	fmt.Println(x.left.left.left)
+	s := []int{54, 99, 23, 32, 2, 90, 31, 1, 9999, 10}
+	root := new(tree)
+	root = nil
+	newTree := insert(s, root)
+	newTree = lookup(newTree, s[4])
+	fmt.Println(newTree)
 }
 
-func insert(values []int) *tree {
-	var root *tree
+func insert(values []int, root *tree) *tree {
 	for _, v := range values {
 		root = add(root, v)
 	}
@@ -38,4 +40,18 @@ func add(t *tree, value int) *tree {
 	}
 
 	return t
+}
+
+
+func lookup(t *tree, value int) *tree {
+	if t == nil {
+		return t
+	}
+	if t.value == value {
+		return t
+	} else if value < t.value {
+		return lookup(t.left, value)
+	} else {
+		return lookup(t.right, value)
+	}
 }
