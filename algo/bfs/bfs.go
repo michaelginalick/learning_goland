@@ -16,6 +16,21 @@ type File struct {
   } `json:"movies"`
 }
 
+type Queue struct {
+  slice []*Node
+}
+
+func (q *Queue) EnQueue(n *Node) {
+  q.slice = append(q.slice, n)
+}
+
+func (q *Queue) DeQueue() *Node {
+  first := q.slice[0]
+  q.slice = q.slice[1:len(q.slice)]
+
+  return first
+}
+
 type Node struct {
   value string
   edges []*Node
@@ -26,6 +41,8 @@ type Node struct {
 type Graph struct {
   nodes []*Node
   graph map[string]*Node
+  end string
+  start string
 }
 
 func (g *Graph) addNode(n *Node) {
@@ -39,6 +56,28 @@ func (g *Graph) addNode(n *Node) {
   g.graph[title] = n
 }
 
+
+func (g *Graph) setStart(s string) *Node {
+  for i := 0; i < len(g.nodes); i++ {
+    if g.nodes[i].value == s {
+      g.start = s
+      return g.nodes[i]
+    }    
+  }
+  var actorNode *Node = new(Node)
+  return actorNode
+}
+
+func (g *Graph) setEnd(s string) *Node {
+ for i := 0; i < len(g.nodes); i++ {
+    if g.nodes[i].value == s {
+      g.end = s
+      return g.nodes[i]
+    }    
+  }
+  var actorNode *Node = new(Node)
+  return actorNode
+}
 
 func (g *Graph) getNode(s string) *Node {
   for i := 0; i < len(g.nodes); i++ {
@@ -85,5 +124,25 @@ func main() {
       
     }
   }
-  fmt.Println(g)
+
+  start := g.setStart("Kevin Bacon")
+  end := g.setEnd("Kevin Bacon")
+  var queue *Queue = new(Queue)
+
+  start.searched = true
+  queue.EnQueue(start)
+
+
+  for len(queue.slice) > 0 {
+    current := queue.DeQueue()
+
+    if current.value == end.value {
+      fmt.Println("found!")
+    }
+  }
+
+
+  // for i := 0; i < len(g.nodes); i++ {
+  //   fmt.Printf("%v %p %v\n", &g.nodes[i], g.nodes[i], *g.nodes[i])
+  // }
 }
