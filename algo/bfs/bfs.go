@@ -94,22 +94,7 @@ func (n *Node) addEdge(actorNode *Node) {
   actorNode.edges = append(actorNode.edges, n)
 }
 
-
-func main() {
-  var file File
-  var g *Graph = new(Graph)
-
-  jsonFile, err := os.Open("bacon.json")
-  
-  if err != nil {
-    fmt.Println(err)
-  }
-
-  defer jsonFile.Close()
-  byteValue, _ := ioutil.ReadAll(jsonFile)
-  json.Unmarshal(byteValue, &file)
-
-
+func populateGraph(file File, g *Graph) {
   for i := 0; i < len(file.Movies); i++ {
     var movieNode *Node = new(Node)
     movieNode.value = file.Movies[i].Title
@@ -124,7 +109,9 @@ func main() {
       
     }
   }
+}
 
+func bfs(g *Graph) *Node {
   start := g.setStart("Rachel McAdams")
   end := g.setEnd("Kevin Bacon")
   var queue *Queue = new(Queue)
@@ -150,6 +137,10 @@ func main() {
     }
   }
 
+  return end
+}
+
+func buildPath(end *Node) {
   path := make([]*Node, 5)
   path = append(path, end)
   next := end.parent
@@ -165,5 +156,25 @@ func main() {
     }
   } 
   fmt.Println(txt)
+}
+
+
+func main() {
+  var file File
+  var g *Graph = new(Graph)
+
+  jsonFile, err := os.Open("bacon.json")
+  
+  if err != nil {
+    fmt.Println(err)
+  }
+
+  defer jsonFile.Close()
+  byteValue, _ := ioutil.ReadAll(jsonFile)
+  json.Unmarshal(byteValue, &file)
+
+  populateGraph(file, g)
+  end := bfs(g)
+  buildPath(end)
 
 }
