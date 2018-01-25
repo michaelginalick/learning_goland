@@ -35,7 +35,7 @@ type Node struct {
   value string
   edges []*Node
   searched bool
-  parent string
+  parent *Node
 }
 
 type Graph struct {
@@ -125,24 +125,45 @@ func main() {
     }
   }
 
-  start := g.setStart("Kevin Bacon")
+  start := g.setStart("Rachel McAdams")
   end := g.setEnd("Kevin Bacon")
   var queue *Queue = new(Queue)
 
   start.searched = true
   queue.EnQueue(start)
 
-
   for len(queue.slice) > 0 {
     current := queue.DeQueue()
-
     if current.value == end.value {
       fmt.Println("found!")
+      break
+    }
+    edges := current.edges
+
+    for i := 0; i < len(edges); i++ {
+      neighbor := edges[i]
+      if !neighbor.searched {
+        neighbor.searched = true
+        neighbor.parent = current
+        queue.EnQueue(neighbor)
+      }
     }
   }
 
+  path := make([]*Node, 5)
+  path = append(path, end)
+  next := end.parent
 
-  // for i := 0; i < len(g.nodes); i++ {
-  //   fmt.Printf("%v %p %v\n", &g.nodes[i], g.nodes[i], *g.nodes[i])
-  // }
+  for n := next; n != nil; n = n.parent {
+    path = append(path, n)
+  }
+  txt := ""
+  for i:=len(path)-1; i >=0; i-- {
+    l := path[i]
+    if l != nil {
+      txt += l.value + "-->"
+    }
+  } 
+  fmt.Println(txt)
+
 }
