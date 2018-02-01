@@ -62,7 +62,7 @@ func (g *Graph) setStart(s string) *Node {
     if g.nodes[i].value == s {
       g.start = s
       return g.nodes[i]
-    }    
+    }
   }
   var actorNode *Node = new(Node)
   return actorNode
@@ -73,7 +73,7 @@ func (g *Graph) setEnd(s string) *Node {
     if g.nodes[i].value == s {
       g.end = s
       return g.nodes[i]
-    }    
+    }
   }
   var actorNode *Node = new(Node)
   return actorNode
@@ -99,14 +99,13 @@ func populateGraph(file File, g *Graph) {
     var movieNode *Node = new(Node)
     movieNode.value = file.Movies[i].Title
     g.addNode(movieNode)
-    
+
     for j := 0; j < len(file.Movies[i].Cast); j++ {
       actorNode := g.getNode(file.Movies[i].Cast[j])
 
       actorNode.value = file.Movies[i].Cast[j]
       g.addNode(actorNode)
       movieNode.addEdge(actorNode)
-      
     }
   }
 }
@@ -140,8 +139,9 @@ func bfs(g *Graph) *Node {
   return end
 }
 
-func buildPath(end *Node) {
-  path := make([]*Node, 5)
+func buildPath(end *Node, g *Graph) {
+  var path []*Node
+
   path = append(path, end)
   next := end.parent
 
@@ -152,12 +152,15 @@ func buildPath(end *Node) {
   for i:=len(path)-1; i >=0; i-- {
     l := path[i]
     if l != nil {
-      txt += l.value + "-->"
+      if l.value != g.end {
+        txt += (l.value + "-->")
+      } else {
+        txt += l.value
+      }
     }
   } 
   fmt.Println(txt)
 }
-
 
 func main() {
   var file File
@@ -175,6 +178,6 @@ func main() {
 
   populateGraph(file, g)
   end := bfs(g)
-  buildPath(end)
+  buildPath(end, g)
 
 }
