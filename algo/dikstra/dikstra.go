@@ -25,6 +25,7 @@ type Graph struct {
   graph map[string]*Node
 }
 
+
 func (n *Node) addEdge(e *Edge) {
   n.edges = append(n.edges, e)
 }
@@ -51,20 +52,31 @@ func main() {
       continue
     }
     td := strings.Split(string(line), " ")
-    var n *Node = new(Node)
-    var e *Edge = new(Edge)
-    n.city = td[0]
-    e.destination = td[1]
-    weight := stringConv(td[2])
-    e.weight = weight
-    n.addEdge(e)
+    from := td[0]
+    to := td[1]
+    weight := td[2]
 
-    _, ok := g.graph[n.city]
-
+    _, ok := g.graph[from]
+    var fromV *Node = new(Node)
     if !ok {
-      g.graph[n.city] = n 
+      g.graph[from] = fromV
+    } else {
+      fromV = g.graph[from]
     }
+
+    _, okTo := g.graph[to]
+    var toV *Node = new(Node)
+    if !okTo {
+      g.graph[to] = toV
+    } else {
+      fromV = g.graph[to]
+    }
+    
+    fromV.addEdge(toV, weight)
+
+
+   
   }
-  x := g.graph["Memphis"].edges
-  fmt.Println(x[0])
+  x := len(g.graph)
+  fmt.Println(x)
 }

@@ -1,0 +1,40 @@
+String from = input.next();
+String to = input.next();
+int distance = input.nextInt();
+
+Vertex fromV = null;
+if (!vertices.containsKey(from)) {
+    fromV = new Vertex(from);
+    vertices.put(from, fromV);
+} else {
+    fromV = vertices.get(from);
+}
+
+Vertex toV = null;
+if (!vertices.containsKey(to)) {
+    toV = new Vertex(to);
+    vertices.put(to, toV);
+} else {
+    toV = vertices.get(to);
+}
+
+fromV.addEdge(toV, distance);
+toV.addEdge(fromV, distance);
+
+
+    var n *Node = new(Node)
+    var e *Edge = new(Edge)
+
+
+
+ n.city = td[0]
+    e.destination = td[1]
+    weight := stringConv(td[2])
+    e.weight = weight
+    n.addEdge(e)
+
+    _, ok := g.graph[n.city]
+
+    if !ok {
+      g.graph[n.city] = n 
+    }
