@@ -44,11 +44,6 @@ func openDB() *sql.DB {
   return db
 }
 
-func Index(w http.ResponseWriter, r *http.Request) {
-  fmt.Fprintf(w, "hello word")
-}
-
-
 func SiteShow(w http.ResponseWriter, r *http.Request) {
   var s Site
   jd := new(JSONData)
@@ -80,7 +75,6 @@ func SiteShow(w http.ResponseWriter, r *http.Request) {
 
 func main() {
   router := mux.NewRouter().StrictSlash(true)
-  router.HandleFunc("/", Index)
   router.HandleFunc("/sites/{siteId}", SiteShow).Methods("GET")
   log.Fatal(http.ListenAndServe(":8080", router))
 
