@@ -7,6 +7,7 @@ import (
     "fmt"
     _ "github.com/lib/pq"
     "database/sql"
+    "encoding/json"
 )
 
 const (
@@ -19,10 +20,13 @@ const (
 
 
 type Site struct {
-  id int
-  name string
+  Id int `json:"id"`
+  Name string `json:"string"`
 }
 
+type JSONData struct {
+  SiteID int `json:"siteId"`
+}
 
 func openDB() *sql.DB {
   var db *sql.DB
@@ -46,30 +50,38 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 
 func SiteShow(w http.ResponseWriter, r *http.Request) {
+  var s Site
+  jd := new(JSONData)
   vars := mux.Vars(r)
   siteId := vars["siteId"]
   db := openDB()
-  row := db.QueryRow("select * from sites where id = $1", siteId)
-  site := new(Site)
+  
+  err := db.QueryRow("select id from sites where id = $1", siteId).Scan(&s.Id)
 
-  err := row.Scan(&site.id, &site.name)
-  if err == sql.ErrNoRows {
-    http.NotFound(w, r)
-    return
-  } else if err != nil {
-    fmt.Println(err)
-    http.Error(w, http.StatusText(500), 500)
-    return
-  }
+   if err != nil {
+      log.Fatalf("Failed to redirect stderr to file: %v", err)
+    }
 
-  fmt.Fprintf(w, "%d, %s", site.id, site.name)
+    if err != nil {
+      log.Printf("Failed to encode a JSON response: %v", err)
+      w.WriteHeader(http.StatusInternalServerError)
+      return
+    }
+    w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+    jd.SiteID = s.Id
+    data, err := json.Marshal(jd)
+
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Fprintf(w, string(data))
 }
 
 
 func main() {
   router := mux.NewRouter().StrictSlash(true)
   router.HandleFunc("/", Index)
-  router.HandleFunc("/sites/{siteId}", SiteShow)
+  router.HandleFunc("/sites/{siteId}", SiteShow).Methods("GET")
   log.Fatal(http.ListenAndServe(":8080", router))
 
 }
