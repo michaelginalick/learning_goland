@@ -41,7 +41,7 @@ func openDB() *sql.DB {
   if err = db.Ping(); err != nil {
     log.Fatal(err)
   }
-  fmt.Println("Successfully connected!")
+  
   return db
 }
 
