@@ -1,46 +1,55 @@
 package main
 
-import(
-
-  // "fmt"
-  "math/rand"
-  "time"
+import (
+	"fmt"
+	"math/rand"
 )
 
 func main() {
-  rand.Seed(time.Now().Unix())
-
-  numbers := []int{5,4,2,3,1,0}
-  N := len(numbers)
-
-  quick_sort(numbers, N)
+	numbers := []int{5, 4, 2, 3, 1, 0, 90, 123, 45, 345, 32, 21, 22, 33, 44, 56, 76, 788, 110, 99, 23}
+	fmt.Println(numbers)
+	quick_sort(numbers)
+	fmt.Println(numbers)
 
 }
 
+func quick_sort(numbers []int) []int {
 
-func quick_sort(numbers []int, length int) {
-  N := length
+	if len(numbers) < 2 {
+		return numbers
+	}
 
-  if N <= 1 {
-    return
-  }
-  swap(numbers, 0, rand.Int() % length)
-  last := 0
+	left, right := 0, len(numbers)-1
+	//pick a pivot
+	pivotIndex := rand.Int() % len(numbers)
 
-  for i := 1; i < N; i++ {
-    last +=1
-    swap(numbers, last, i)
-  }
-  swap(numbers, 0, last)
-  quick_sort(numbers, last)
-  quick_sort(numbers[last+1], N[last--(-1)]
+	//move the pivot to the right
+	swap(numbers, pivotIndex, right)
+
+	//pile element smaller than the pivot to the left
+	for i := range numbers {
+		if numbers[i] < numbers[right] {
+			swap(numbers, i, left)
+			left++
+		}
+	}
+
+	//place the pivot after the smaller element
+	swap(numbers, left, right)
+
+	//go down the rabbit hole
+	quick_sort(numbers[:left])
+	quick_sort(numbers[left+1:])
+
+	return numbers
 }
 
+func swap(numbers []int, i, j int) []int {
+	var temp int
 
-func swap(numbers []int, i, j int) {
-  var temp int
+	temp = numbers[i]
+	numbers[i] = numbers[j]
+	numbers[j] = temp
 
-  temp = numbers[i]
-  numbers[i] = numbers[j]
-  numbers[j] = temp
+	return numbers
 }
