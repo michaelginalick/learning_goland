@@ -1,0 +1,6 @@
+{
+	"go.inferGopath": true,
+	"go.lintOnSave": true,
+	"go.buildOnSave": true,
+	"go.useCodeSnippetsOnFunctionSuggest": true
+}
