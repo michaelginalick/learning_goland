@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -11,32 +10,9 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/server/structs/site"
 	"github.com/server/structs/jsonData"
+	"github.com/server/db"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "password"
-	dbname   = "pathlogic"
-)
-
-
-func openDB() *sql.DB {
-	var db *sql.DB
-
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
-	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		panic(err)
-	}
-
-	if err = db.Ping(); err != nil {
-		log.Fatal(err)
-	}
-
-	return db
-}
 
 func siteShow(w http.ResponseWriter, r *http.Request) {
 	s := new(site.Site)
@@ -44,9 +20,10 @@ func siteShow(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	siteID := vars["siteId"]
-	db := openDB()
+	db := db.OpenDB()
+	
 
-	err := db.QueryRow("select * from sites where id = $1", siteID).Scan(&s.ID)
+	err := db.QueryRow("select id from sites where id = $1", siteID).Scan(&s.ID)
 
 	if err != nil {
 		log.Fatalf("Failed to redirect stderr to file: %v", err)
