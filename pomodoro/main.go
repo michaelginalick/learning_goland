@@ -50,7 +50,7 @@ func main() {
 		time.Sleep(time.Second)
 		second = maintainSeconds(second)
 	}
-
+	fmt.Println("Your session ended at ", currentTime().Format(time.RFC1123) )
 }
 
 
@@ -63,7 +63,12 @@ func validateInput() time.Duration {
 	if err != nil {
 		fmt.Println(err)
 	}
-	clockTime, _ := strconv.Atoi(strings.TrimSpace(input))
+	clockTime, err := strconv.Atoi(strings.TrimSpace(input))
+
+	if err != nil || (clockTime <= 0 || clockTime >= 60) {
+		validateInput()
+	}
+
 	return time.Duration(clockTime)
 }
 
