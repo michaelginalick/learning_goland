@@ -57,7 +57,7 @@ func main() {
 func validateInput() time.Duration {
 
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Please enter a numnber between 1 and 60: ")
+	fmt.Println("Please enter a number between 1 and 60: ")
 	input, err := reader.ReadString('\n')
 
 	if err != nil {
@@ -66,6 +66,7 @@ func validateInput() time.Duration {
 	clockTime, err := strconv.Atoi(strings.TrimSpace(input))
 
 	if err != nil || (clockTime <= 0 || clockTime >= 60) {
+		fmt.Println("Oops!")
 		validateInput()
 	}
 
