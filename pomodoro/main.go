@@ -1,28 +1,37 @@
 package main
 
 import (
+	"strings"
+	"fmt"
 	"time"
 	"strconv"
 	"./digits"
 	"./transform"
 	tm "github.com/buger/goterm"
+	"bufio"
+	"os"
 )
+
+const finish = "Finish Time"
+const current = "Current Time"
 
 func main() {
 	second := 59
+	totalTime := validateInput()
+
+
 	tm.Clear()
 	tm.MoveCursor(110, 1)
-	startTime := time.Now()
-	
-	totalTime := time.Duration(25)
+
+	startTime := currentTime()
 	finishTime := startTime.Add(time.Minute * totalTime)
-	tm.Println("Finish Time:", finishTime.Format(time.RFC1123))
+	print(finish, finishTime)
 
 
 	for {
-		curTime := time.Now()
+		curTime := currentTime()
 		tm.MoveCursor(1, 1)
-		tm.Println("Current Time:", curTime.Format(time.RFC1123))
+		print(current, curTime)
 
 		if shouldBreakLoop(curTime, finishTime) {
 			break
@@ -37,11 +46,25 @@ func main() {
 													digits.GetDigits(strconv.Itoa(secondTens)), 
 													digits.GetDigits(strconv.Itoa(secondOnes)))
 
-		tm.Flush()
-		
+		tm.Flush() 
 		time.Sleep(time.Second)
+		second = maintainSeconds(second)
 	}
 
+}
+
+
+func validateInput() time.Duration {
+
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("Please enter a numnber between 1 and 60: ")
+	input, err := reader.ReadString('\n')
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	clockTime, _ := strconv.Atoi(strings.TrimSpace(input))
+	return time.Duration(clockTime)
 }
 
 
@@ -52,10 +75,19 @@ func shouldBreakLoop(curTime time.Time, finishTime time.Time) bool {
 	return false
 }
 
-func maintainSeconds(s int) int{
-	s--
-		if s <= 0 {
-			s = 59
-		}
-		return s
+func maintainSeconds(second int) int{
+	second--
+	if second <= 0 {
+		second = 59
+	}
+	return second
+}
+
+
+func currentTime() time.Time {
+	return time.Now()
+}
+
+func print(s string, curTime time.Time) {
+	tm.Println(s, curTime.Format(time.RFC1123))
 }
