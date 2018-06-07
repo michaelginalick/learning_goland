@@ -1,15 +1,16 @@
 package main
 
 import (
-	"strings"
+	"bufio"
 	"fmt"
-	"time"
+	"os"
 	"strconv"
+	"strings"
+	"time"
+
 	"./digits"
 	"./transform"
 	tm "github.com/buger/goterm"
-	"bufio"
-	"os"
 )
 
 const finish = "Finish Time"
@@ -19,14 +20,12 @@ func main() {
 	second := 59
 	totalTime := validateInput()
 
-
 	tm.Clear()
-	tm.MoveCursor(110, 1)
+	tm.MoveCursor(100, 1)
 
 	startTime := currentTime()
 	finishTime := startTime.Add(time.Minute * totalTime)
 	print(finish, finishTime)
-
 
 	for {
 		curTime := currentTime()
@@ -39,20 +38,18 @@ func main() {
 
 		minuteTens, minuteOnes := transform.ExtractNumbers(int(time.Until(finishTime).Minutes()))
 		secondTens, secondOnes := transform.ExtractNumbers(second)
-	
-		transform.FormatNumber(digits.GetDigits(strconv.Itoa(minuteTens)), 
-													digits.GetDigits(strconv.Itoa(minuteOnes)), 
-													digits.GetDigits(":"), 
-													digits.GetDigits(strconv.Itoa(secondTens)), 
-													digits.GetDigits(strconv.Itoa(secondOnes)))
 
-		tm.Flush() 
+		transform.FormatNumber(digits.GetDigits(strconv.Itoa(minuteTens)),
+			digits.GetDigits(strconv.Itoa(minuteOnes)),
+			digits.GetDigits(":"),
+			digits.GetDigits(strconv.Itoa(secondTens)),
+			digits.GetDigits(strconv.Itoa(secondOnes)))
+		tm.Flush()
 		time.Sleep(time.Second)
 		second = maintainSeconds(second)
 	}
-	fmt.Println("Your session ended at ", currentTime().Format(time.RFC1123) )
+	fmt.Println("Your session ended at ", currentTime().Format(time.RFC1123))
 }
-
 
 func validateInput() time.Duration {
 
@@ -73,7 +70,6 @@ func validateInput() time.Duration {
 	return time.Duration(clockTime)
 }
 
-
 func shouldBreakLoop(curTime time.Time, finishTime time.Time) bool {
 	if curTime.Format(time.RFC1123) > finishTime.Format(time.RFC1123) {
 		return true
@@ -81,14 +77,13 @@ func shouldBreakLoop(curTime time.Time, finishTime time.Time) bool {
 	return false
 }
 
-func maintainSeconds(second int) int{
+func maintainSeconds(second int) int {
 	second--
 	if second <= 0 {
 		second = 59
 	}
 	return second
 }
-
 
 func currentTime() time.Time {
 	return time.Now()
