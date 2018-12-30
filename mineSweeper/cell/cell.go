@@ -41,8 +41,8 @@ func (c *Cell) Show(board [][]*Cell) {
 	}
 }
 
-// CountNeighbors counts the number of bees neighboring the cell
-func (c *Cell) CountNeighbors(board [][]*Cell) {
+// CountBeeNeighbors counts the number of bees neighboring the cell
+func (c *Cell) CountBeeNeighbors(board [][]*Cell) {
 
 	if c.Bee {
 		c.NeighborCount = -1
