@@ -24,7 +24,7 @@ func (g *Game) StartGame() {
 	g.createBoard()
 	b := g.board
 	b.MakeGrid(15, 15)
-	bCount := 20
+	bCount := 40
 
 	b.PopulateBoard()
 	b.SeedBees(bCount)
