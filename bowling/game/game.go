@@ -13,9 +13,9 @@ func New() *Game {
 }
 
 // Roll counts the current role pins
-func (g *Game) Roll(currentRole, pins int) {
-	g.rolls[currentRole] = pins
-	currentRole++
+func (g *Game) Roll(pins int) {
+	g.rolls[g.currentRole] = pins
+	g.currentRole++
 }
 
 // RollMany rolls n times
